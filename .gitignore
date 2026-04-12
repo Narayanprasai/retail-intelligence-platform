@@ -22,3 +22,8 @@ data/
 
 # OS
 .DS_Store
+
+# Logs
+*.log
+logs/
+ingestion/failed_uploads.log

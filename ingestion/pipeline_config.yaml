@@ -1,0 +1,60 @@
+# =========================
+# Pipeline Configuration
+# =========================
+project: retail-intelligence-platform
+environment: dev
+region: ap-southeast-2
+
+# S3 Settings
+s3:
+  raw_bucket: retail-platform-raw-013849273657
+  prefix: olist
+
+# Dead Letter Queue
+dlq:
+  enabled: true
+  log_file: failed_uploads.log
+
+# Data Sources
+sources:
+  - name: orders
+    filename: olist_orders_dataset.csv
+    local_path: ../data/raw/olist_orders_dataset.csv
+    partition_key: order_purchase_timestamp
+    critical: true
+
+  - name: customers
+    filename: olist_customers_dataset.csv
+    local_path: ../data/raw/olist_customers_dataset.csv
+    partition_key: null
+    critical: true
+
+  - name: order_items
+    filename: olist_order_items_dataset.csv
+    local_path: ../data/raw/olist_order_items_dataset.csv
+    partition_key: null
+    critical: true
+
+  - name: products
+    filename: olist_products_dataset.csv
+    local_path: ../data/raw/olist_products_dataset.csv
+    partition_key: null
+    critical: false
+
+  - name: reviews
+    filename: olist_order_reviews_dataset.csv
+    local_path: ../data/raw/olist_order_reviews_dataset.csv
+    partition_key: null
+    critical: false
+
+  - name: sellers
+    filename: olist_sellers_dataset.csv
+    local_path: ../data/raw/olist_sellers_dataset.csv
+    partition_key: null
+    critical: false
+
+  - name: payments
+    filename: olist_order_payments_dataset.csv
+    local_path: ../data/raw/olist_order_payments_dataset.csv
+    partition_key: null
+    critical: false
