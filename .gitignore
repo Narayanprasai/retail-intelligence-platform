@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.pyc
+dbt-env/
+venv/
+.env
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.backup
+*.tfvars
+
+# Data files
+*.csv
+*.parquet
+*.json
+data/
+
+# AWS
+.aws/
+
+# OS
+.DS_Store
