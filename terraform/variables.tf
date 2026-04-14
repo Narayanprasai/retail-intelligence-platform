@@ -21,3 +21,9 @@ variable "account_id" {
   type        = string
   default     = "013849273657"
 }
+
+variable "redshift_password" {
+  description = "Redshift admin password"
+  type        = string
+  sensitive   = true
+}

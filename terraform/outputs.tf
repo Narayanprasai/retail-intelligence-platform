@@ -12,3 +12,8 @@ output "scripts_bucket_name" {
   description = "S3 scripts bucket"
   value       = aws_s3_bucket.scripts_zone.bucket
 }
+
+output "redshift_endpoint" {
+  description = "Redshift Serverless endpoint"
+  value       = aws_redshiftserverless_workgroup.main.endpoint
+}
