@@ -1,0 +1,47 @@
+version: 2
+
+models:
+  - name: dim_customer
+    description: "Customer dimension with SCD Type 2 history"
+    columns:
+      - name: customer_sk
+        tests:
+          - not_null
+          - unique
+      - name: customer_id
+        tests:
+          - not_null
+
+  - name: dim_product
+    description: "Product dimension"
+    columns:
+      - name: product_sk
+        tests:
+          - not_null
+          - unique
+
+  - name: dim_seller
+    description: "Seller dimension"
+    columns:
+      - name: seller_sk
+        tests:
+          - not_null
+          - unique
+
+  - name: dim_date
+    description: "Date dimension with calendar attributes"
+    columns:
+      - name: date_id
+        tests:
+          - not_null
+          - unique
+
+  - name: fct_order_items
+    description: "Fact table — one row per order item"
+    columns:
+      - name: order_id
+        tests:
+          - not_null
+      - name: total_amount
+        tests:
+          - not_null

@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  - name: raw_data
+    database: retail_db
+    schema: raw_data
+    tables:
+      - name: dim_customer
+      - name: dim_product
+      - name: dim_seller
+      - name: dim_date
+      - name: fact_order_items

@@ -24,7 +24,7 @@ resource "aws_redshiftserverless_workgroup" "main" {
   base_capacity  = 8
   
   # Keep private — no public access
-  publicly_accessible = false
+  publicly_accessible = true
 
   subnet_ids         = aws_subnet.redshift[*].id
   security_group_ids = [aws_security_group.redshift.id]
@@ -78,7 +78,7 @@ resource "aws_security_group" "redshift" {
     from_port   = 5439
     to_port     = 5439
     protocol    = "tcp"
-    cidr_blocks = ["10.0.0.0/16"]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   # Allow all outbound
@@ -147,4 +147,38 @@ resource "aws_iam_role_policy" "redshift_s3_policy" {
       }
     ]
   })
+}
+
+# =========================
+# INTERNET GATEWAY
+# =========================
+resource "aws_internet_gateway" "redshift" {
+  vpc_id = aws_vpc.redshift.id
+
+  tags = {
+    Name    = "${var.project_name}-igw"
+    Project = var.project_name
+  }
+}
+
+# Route table — send internet traffic through gateway
+resource "aws_route_table" "redshift" {
+  vpc_id = aws_vpc.redshift.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.redshift.id
+  }
+
+  tags = {
+    Name    = "${var.project_name}-rt"
+    Project = var.project_name
+  }
+}
+
+# Associate route table with all subnets
+resource "aws_route_table_association" "redshift" {
+  count          = 3
+  subnet_id      = aws_subnet.redshift[count.index].id
+  route_table_id = aws_route_table.redshift.id
 }

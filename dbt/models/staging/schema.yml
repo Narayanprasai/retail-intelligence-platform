@@ -1,0 +1,34 @@
+version: 2
+
+models:
+  - name: stg_customers
+    description: "Cleaned customer dimension from raw_data"
+    columns:
+      - name: customer_sk
+        tests:
+          - not_null
+      - name: customer_id
+        tests:
+          - not_null
+          - unique
+
+  - name: stg_products
+    description: "Cleaned product dimension from raw_data"
+    columns:
+      - name: product_sk
+        tests:
+          - not_null
+      - name: product_id
+        tests:
+          - not_null
+          - unique
+
+  - name: stg_order_items
+    description: "Cleaned fact table from raw_data"
+    columns:
+      - name: order_id
+        tests:
+          - not_null
+      - name: total_amount
+        tests:
+          - not_null
