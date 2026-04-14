@@ -155,3 +155,37 @@ resource "aws_glue_job" "csv_to_parquet" {
     Environment = "dev"
   }
 }
+
+# =========================
+# GLUE JOB — STAR SCHEMA
+# =========================
+resource "aws_glue_job" "star_schema_builder" {
+  name         = "${var.project_name}-star-schema-builder"
+  role_arn     = aws_iam_role.glue_role.arn
+  glue_version = "4.0"
+  worker_type  = "G.1X"
+  number_of_workers = 2
+
+  command {
+    name            = "glueetl"
+    script_location = "s3://${var.project_name}-scripts-${var.account_id}/glue_jobs/star_schema_builder.py"
+    python_version  = "3"
+  }
+
+  default_arguments = {
+    "--job-language"                     = "python"
+    "--enable-continuous-cloudwatch-log" = "true"
+    "--enable-metrics"                   = "true"
+    "--curated_bucket"                   = "${var.project_name}-curated-${var.account_id}"
+    "--TempDir"                          = "s3://${var.project_name}-logs-${var.account_id}/glue-temp/"
+  }
+
+  execution_property {
+    max_concurrent_runs = 1
+  }
+
+  tags = {
+    Project     = var.project_name
+    Environment = "dev"
+  }
+}
