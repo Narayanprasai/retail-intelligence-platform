@@ -119,3 +119,39 @@ configuration = jsonencode({
     Environment = "dev"
   }
 }
+
+# =========================
+# GLUE JOB — CSV TO PARQUET
+# =========================
+resource "aws_glue_job" "csv_to_parquet" {
+  name         = "${var.project_name}-csv-to-parquet"
+  role_arn     = aws_iam_role.glue_role.arn
+  glue_version = "4.0"
+  worker_type  = "G.1X"
+  number_of_workers = 2
+
+  command {
+    name            = "glueetl"
+    script_location = "s3://${var.project_name}-scripts-${var.account_id}/glue_jobs/csv_to_parquet.py"
+    python_version  = "3"
+  }
+
+  default_arguments = {
+    "--job-language"                     = "python"
+    "--enable-continuous-cloudwatch-log" = "true"
+    "--enable-metrics"                   = "true"
+    "--raw_bucket"                       = "${var.project_name}-raw-${var.account_id}"
+    "--curated_bucket"                   = "${var.project_name}-curated-${var.account_id}"
+    "--database_name"                    = "retail_raw"
+    "--TempDir"                          = "s3://${var.project_name}-logs-${var.account_id}/glue-temp/"
+  }
+
+  execution_property {
+    max_concurrent_runs = 1
+  }
+
+  tags = {
+    Project     = var.project_name
+    Environment = "dev"
+  }
+}
