@@ -26,4 +26,5 @@ data/
 # Logs
 *.log
 logs/
-ingestion/failed_uploads.log
+ingestion/failed_uploads.logapi/.env
+api/.env
