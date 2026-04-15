@@ -1,0 +1,5 @@
+fastapi
+uvicorn
+redshift-connector
+python-dotenv
+mangum
